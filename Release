@@ -1,0 +1,23 @@
+Origin: codespaces-blank
+Label: codespaces-blank
+Suite: stable
+Version: 1.0
+Codename: ios
+Architectures: iphoneos-arm iphoneos-arm64
+Components: main
+Description: Automated repository for codespaces-blank containing 23 active tweaks. Updated on 2026-05-18.
+MD5Sum:
+ 35206baf59ccacb718d5c18f4842240c 20014 Packages
+ c3ff2e48164393e8530705e6d7b189ba 5149 Packages.gz
+ 5a2a0a39eb4e707fc2e5d4ca08a7fd56 5379 Packages.bz2
+ 7910ee09c93215696ad12d46ef232e9d 4796 Packages.xz
+SHA1:
+ 86d31723115b7d293b65fb882ce07afbad584e2a 20014 Packages
+ 914ec3529bddd7d904ed6d69f3f9dda691093fbf 5149 Packages.gz
+ 0cd1e549eabaa6c282f5a7565b12d9c718b49254 5379 Packages.bz2
+ decb79fb94fe3da13eff3d32203ceac9309caf61 4796 Packages.xz
+SHA256:
+ ead2b9dc1469263f574a1ca2172d4283c21e7c2d677eaac4c31b079bd0550d49 20014 Packages
+ 8b51ab4fb5463c5d7888bf7103ecf31dab0f35a6fd099021317fbab3cbbb2757 5149 Packages.gz
+ d9413d8acd069cd829a059357b307a5b0ed6274e205d7853438cbd547d4ff00c 5379 Packages.bz2
+ d4346d2cf9f328a8ebac37bf60935aef82d85d99d4186ed0d9e9c578c49b6e78 4796 Packages.xz
