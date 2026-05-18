@@ -1,11 +1,11 @@
-Origin: codespaces-blank
-Label: codespaces-blank
+Origin: iTP67
+Label: iTP67
 Suite: stable
 Version: 1.0
 Codename: ios
 Architectures: iphoneos-arm iphoneos-arm64
 Components: main
-Description: Automated repository for codespaces-blank containing 23 active tweaks. Updated on 2026-05-18.
+Description: Fixes and Tweaks from other repos, credit to the tweaks from their repos.
 MD5Sum:
  35206baf59ccacb718d5c18f4842240c 20014 Packages
  c3ff2e48164393e8530705e6d7b189ba 5149 Packages.gz
