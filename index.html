@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTP67 Repository</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --accent-color: #007aff;
+            --text-main: #ffffff;
+            --text-muted: #8e8e93;
+            --border-color: #1c1c1e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .repo-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 22px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            margin: 0 auto 16px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .repo-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 22px;
+            object-fit: cover;
+        }
+
+        /* Fallback icon if image is missing */
+        .repo-icon::before {
+            content: "iTP";
+            font-weight: bold;
+            font-size: 28px;
+            color: var(--accent-color);
+            display: block;
+        }
+        .repo-icon img + ::before { display: none; }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .description {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 0 0 32px 0;
+            line-height: 1.4;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            background-color: #1c1c1e;
+        }
+
+        .btn.primary {
+            background-color: var(--accent-color);
+            border: none;
+        }
+
+        .btn.primary:active {
+            background-color: #0063cc;
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Repository Logo -->
+        <div class="repo-icon">
+            <img src="https://yt3.ggpht.com/YhYBOypqtnvi5jxFGJFyKbLZkSql7LMF70UEBsaxqRZrKElrET66fHuQG7mXADOxrkT-Xs-72w=s120-c-k-c0x00ffffff-no-rj" alt="iTP67 Logo" onerror="this.style.display='none'">
+        </div>
+
+        <!-- Repo Information -->
+        <h1>iTP67</h1>
+        <p class="description">Welcome to the official iTP67 package repository. Add this source to your package manager to install fixes.</p>
+
+        <!-- Quick Add Buttons for Mobile Devices -->
+        <a href="sileo://source/https://itp67.pages.dev" id="sileo-btn" class="btn primary">
+            Add to Sileo
+        </a>
+        
+        <a href="cydia://url/https://saurik.com #url/https://itp67.pages.dev" id="cydia-btn" class="btn">
+            Add to Cydia
+        </a>
+
+        <a href="zebra://sources/add/https://itp67.pages.dev" id="zebra-btn" class="btn">
+            Add to Zebra
+        </a>
+
+        <!-- Footer Info -->
+        <div class="footer">
+            &copy; 2026 iTP67. All rights reserved.
+        </div>
+    </div>
+
+
+
+</body>
+</html>
