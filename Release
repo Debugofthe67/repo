@@ -1,0 +1,23 @@
+Origin: repo
+Label: repo
+Suite: stable
+Version: 1.0
+Codename: ios
+Architectures: iphoneos-arm iphoneos-arm64
+Components: main
+Description: Automated repository for repo containing 25 active tweaks. Updated on 2026-06-07.
+MD5Sum:
+ 17807b66083767d789832c8602919a7a 21612 Packages
+ 81c903df02e32225e7ebd0f4e0f4830a 5529 Packages.gz
+ bd00b71695d03bd4726d36c260b578b9 5756 Packages.bz2
+ 2130e3651d884a9d1800a680d74489f7 5136 Packages.xz
+SHA1:
+ 165ecbf33287a391f330d8edb0094cb08f20edad 21612 Packages
+ c422c5a8495b79a7855b576ffdb3d491d53bce1e 5529 Packages.gz
+ d09cc516da52db61a5a35bac309eb2e74ad8a355 5756 Packages.bz2
+ 2c6ee70702f5bf39cab75932592380799b2b5890 5136 Packages.xz
+SHA256:
+ 01777afe420e6f50160e882551a2fbad1e288e2cb792dc55185ffe5ecf1892fb 21612 Packages
+ d15ce1e1e787f6712b29c6bbdecb2bcb1a3ac6309c373e5ff0e356abcd623b74 5529 Packages.gz
+ a3532d8f748b93ba0523ef521e46097a61a380f293698371aeed3640c257ee0d 5756 Packages.bz2
+ a3040a84cbb864309439e578ba070922ca959943acbc03887a96ff31b67e72bd 5136 Packages.xz
