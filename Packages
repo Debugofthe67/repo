@@ -162,6 +162,20 @@ Description: This tweak fixes the App Store (Particularly every aspect of the iT
 Author: Requis (ObscureMosquito), Daph (Mali)
 Name: iTunesStoreX
 
+Package: com.nostalgios.protube6
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: t
+Filename: ./debs/com.nostalgios.protube6_1.0_iphoneos-arm.deb
+Size: 5502940
+MD5sum: 8ce0d35bc59e695239ec87f711446c1f
+SHA1: a4cedf49cf2620007b84454c810e9d4df255989a
+SHA256: c8d91a183cf0131a87d6bf7a03fd67c12e817a41787a137eb026a7f101fb68af
+Section: Tweak
+Description: Protube iOS 6 2023
+Author: iOS6NeverDie
+Name: Protube iOS6 2023
+
 Package: com.rpetrich.sslpatch
 Version: 0.1
 Architecture: iphoneos-arm
