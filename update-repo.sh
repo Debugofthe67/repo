@@ -21,13 +21,13 @@ dpkg-scanpackages -m ./debs /dev/null > Packages
 TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 
 # FIX: Check if we are running inside GitHub Codespaces
-if [ -n "$GITHUB_REPOSITORY" ]; then
-    # Extracts just the repo name from "username/repository-name"
-    REPO_NAME=$(basename "$GITHUB_REPOSITORY")
-else
-    # Fallback to local folder name if running outside of GitHub
-    REPO_NAME=$(basename "$(pwd)")
-fi
+# ==============================================================================
+# CUSTOM REPOSITORY METADATA CONFIGURATION (MANUAL HARDCODE)
+# ==============================================================================
+REPO_NAME="TP67"
+REPO_LABEL="TP67"
+
+
 
 # Create multiple compression formats
 echo "Compressing package indices..."
@@ -146,6 +146,16 @@ awk -v r="$HTML_LIST" '
 ' index.html > index.tmp && mv index.tmp index.html
 
 rm -f index.tmp index.html.bak
+
+# ==============================================================================
+# AUTOMATIC GIT CASE-SENSITIVITY RESET (PREVENTS FUTURE 404s)
+# ==============================================================================
+echo "Resetting Git case tracking cache to prevent 404 errors..."
+git rm -r --cached debs/ 2>/dev/null
+mv debs debs_temp 2>/dev/null
+mv debs_temp debs 2>/dev/null
+git add debs/
+
 
 # Automatically sync files directly into GitHub tracking tree
 echo "Syncing changes to GitHub repository..."
