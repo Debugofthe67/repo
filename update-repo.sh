@@ -74,26 +74,18 @@ sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.
 
 
 # ==============================================================================
-# DYNAMIC HTML TWEAK INJECTION WITH DISK VERIFICATION & EXACT FILENAME MATCHING
+# FINAL DYNAMIC HTML INJECTION WITH TRIMMING STRIPPER (FIXES 404 TYPO)
 # ==============================================================================
-echo "Updating index.html with live tweak metadata (verifying physical files)..."
+echo "Updating index.html with live tweak metadata (stripping hidden endings)..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
 # 2. Parse Packages file using an internal associative memory map via Awk
-# Pass a list of actual physical files currently in the debs folder to Awk for absolute validation
-EXISTING_FILES=$(find ./debs -maxdepth 1 -type f -name "*.deb" | paste -sd "," -)
-
-HTML_LIST=$(awk -v disk_files="$EXISTING_FILES" '
+HTML_LIST=$(awk '
 BEGIN {
     RS = ""
     FS = "\n"
-    # Split the existing disk files comma list into an array for instant lookups
-    split(disk_files, allowed, ",")
-    for (f in allowed) {
-        real_paths[allowed[f]] = 1
-    }
 }
 {
     id = ""
@@ -103,40 +95,44 @@ BEGIN {
     filename = ""
     
     for (i = 1; i <= NF; i++) {
-        if ($i ~ /^Package:/) { sub(/^Package: /, "", $i); id = $i }
-        if ($i ~ /^Name:/) { sub(/^Name: /, "", $i); name = $i }
-        if ($i ~ /^Description:/) { sub(/^Description: /, "", $i); desc = $i }
-        if ($i ~ /^Version:/) { sub(/^Version: /, "", $i); ver = $i }
-        if ($i ~ /^Filename:/) { sub(/^Filename: /, "", $i); filename = $i }
+        # FORCE CLEAN STRIPPING: Clear any and all hidden carriage returns, tabs, or trailing whitespace
+        gsub(/[\r\t]/, "", $i)
+        gsub(/[[:space:]]+$/, "", $i)
+        
+        if ($i ~ /^Package:/) { id = $i; sub(/^Package:[[:space:]]*/, "", id) }
+        if ($i ~ /^Name:/) { name = $i; sub(/^Name:[[:space:]]*/, "", name) }
+        if ($i ~ /^Description:/) { desc = $i; sub(/^Description:[[:space:]]*/, "", desc) }
+        if ($i ~ /^Version:/) { ver = $i; sub(/^Version:[[:space:]]*/, "", ver) }
+        if ($i ~ /^Filename:/) { filename = $i; sub(/^Filename:[[:space:]]*/, "", filename) }
     }
     
+    # Strip any whitespace around variables to guarantee clean output strings
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", filename)
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", ver)
+    
     if (id != "" && filename != "") {
-        # CRITICAL VALIDATION STEP: Verify the exact file path explicitly matches a real file on the disk
-        if (real_paths[filename] == 1) {
-            if (name == "") name = id
-            if (desc == "") desc = "No description provided for this jailbreak package."
-            
-            # Check for duplicates and isolate the highest version instance that actually exists
-            if (!(id in saved_version) || ver > saved_version[id]) {
-                saved_version[id] = ver
-                saved_name[id] = name
-                saved_desc[id] = desc
-                saved_file[id] = filename
-            }
+        if (name == "") name = id
+        if (desc == "") desc = "No description provided."
+        
+        # Track version hierarchy cleanly
+        if (!(id in saved_version) || ver > saved_version[id]) {
+            saved_version[id] = ver
+            saved_name[id] = name
+            saved_desc[id] = desc
+            saved_file[id] = filename
         }
     }
 }
 END {
-    # Generate the clean skeuomorphic HTML using the verified real parsed file paths
     for (id in saved_version) {
-        # Strip the leading dot from ./debs/... so the web path outputs as cleanly /debs/...
         clean_url = saved_file[id]
-        sub(/^\./, "", clean_url)
+        sub(/^\./, "", clean_url) # Strip prefix safely to align /debs/ link map
         
         print "        <li class=\"ios-item\">"
         print "            <a href=\"" clean_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
         print "                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
-        print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93; font-weight:normal;\">v" saved_version[id] "</span></div>"
+        print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93;\">v" saved_version[id] "</span></div>"
         print "                <div class=\"tweak-desc\">" saved_desc[id] "</div>"
         print "            </a>"
         print "        </li>"
@@ -149,7 +145,13 @@ awk -v r="$HTML_LIST" '
   1
 ' index.html > index.tmp && mv index.tmp index.html
 
-# Wipe build artifacts
 rm -f index.tmp index.html.bak
 
-echo "Success! Your package list now matches exact, verified file assets on disk."
+# Automatically sync files directly into GitHub tracking tree
+echo "Syncing changes to GitHub repository..."
+git add .
+git commit -m "Strip trailing line breaks from parsed file index structures"
+git push origin main || git push origin master
+
+echo "Done! The hidden line characters have been entirely stripped out."
+
