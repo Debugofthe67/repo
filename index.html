@@ -1,157 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTP67 Repository</title>
-    <style>
-        :root {
-            --bg-color: #000000;
-            --card-bg: #121212;
-            --accent-color: #007aff;
-            --text-main: #ffffff;
-            --text-muted: #8e8e93;
-            --border-color: #1c1c1e;
-        }
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iTP67</title>
+    <style type="text/css">
+        /* Classic iOS 6 Canvas Textured Background */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: #cbd3d8;
+            background-image: 
+                -webkit-gradient(linear, left top, right top, color-stop(50%, transparent), color-stop(50%, rgba(255,255,255,.15))), 
+                -webkit-gradient(linear, left top, left bottom, color-stop(50%, rgba(255,255,255,.15)), color-stop(50%, transparent));
+            -webkit-background-size: 4px 4px;
+            color: #4c566c;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            -webkit-user-select: none;
+            -webkit-text-size-adjust: none;
         }
 
         .container {
-            width: 100%;
-            max-width: 450px;
-            padding: 24px;
-            box-sizing: border-box;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Legacy WebKit Glossy Header Nav Bar */
+        .repo-banner {
             text-align: center;
+            padding: 16px 10px;
+            background-color: #5b6e8a;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#7a8a9e), to(#4c5c74));
+            border-bottom: 1px solid #2e3846;
+            -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 3px rgba(0,0,0,0.3);
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.6);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
 
-        .repo-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 22px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            margin: 0 auto 16px auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .repo-icon img {
-            width: 100%;
-            height: 100%;
-            border-radius: 22px;
-            object-fit: cover;
-        }
-
-        /* Fallback icon if image is missing */
-        .repo-icon::before {
-            content: "iTP";
+        .repo-title {
+            font-size: 20px;
             font-weight: bold;
-            font-size: 28px;
-            color: var(--accent-color);
+            margin: 0;
+        }
+
+        .repo-subtitle {
+            font-size: 13px;
+            color: #e2e8f0;
+            margin-top: 3px;
+        }
+
+        /* Skeuomorphic Rounded Table View Header */
+        .ios-group-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #4c566c;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+            margin: 18px 0 7px 15px;
+        }
+
+        /* Legacy Table Containers */
+        .ios-list {
+            background-color: #ffffff;
+            border: 1px solid #ababab;
+            -webkit-border-radius: 8px;
+            padding: 0;
+            margin: 0 0 20px 0;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            list-style: none;
+        }
+
+        .ios-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            position: relative;
+            clear: both;
+        }
+
+        .ios-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Legacy Navigation Action Elements */
+        a.action-link {
             display: block;
-        }
-        .repo-icon img + ::before { display: none; }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .description {
-            font-size: 15px;
-            color: var(--text-muted);
-            margin: 0 0 32px 0;
-            line-height: 1.4;
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--card-bg);
-            color: var(--text-main);
             text-decoration: none;
-            padding: 14px 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            border: 1px solid var(--border-color);
-            transition: background-color 0.2s, transform 0.1s;
+            color: #000000;
+            font-weight: bold;
+            font-size: 16px;
+            background: #ffffff;
+            margin: -12px -15px;
+            padding: 12px 15px;
         }
 
-        .btn:active {
-            transform: scale(0.98);
-            background-color: #1c1c1e;
+        a.action-link:active {
+            background-color: #007aff;
+            color: #ffffff;
         }
 
-        .btn.primary {
-            background-color: var(--accent-color);
-            border: none;
+        /* Floating right layout components for non-flex engines */
+        .right-align {
+            float: right;
+            margin-top: 4px;
         }
 
-        .btn.primary:active {
-            background-color: #0063cc;
+        /* Pure CSS Classic iOS Chevron (Compatible with WebKit 536) */
+        .chevron {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-top: 3px solid #bcbcbe;
+            border-right: 3px solid #bcbcbe;
+            -webkit-transform: rotate(45deg);
+            margin-right: 2px;
         }
 
-        .btn-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 12px;
+        a.action-link:active .chevron {
+            border-top-color: #ffffff;
+            border-right-color: #ffffff;
         }
 
-        .footer {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 40px;
+        .tweak-desc {
+            font-weight: normal;
+            font-size: 13px;
+            color: #666666;
+            margin-top: 3px;
+        }
+        
+        .clearfix {
+            clear: both;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Repository Logo -->
-        <div class="repo-icon">
-            <img src="https://yt3.ggpht.com/YhYBOypqtnvi5jxFGJFyKbLZkSql7LMF70UEBsaxqRZrKElrET66fHuQG7mXADOxrkT-Xs-72w=s120-c-k-c0x00ffffff-no-rj" alt="iTP67 Logo" onerror="this.style.display='none'">
-        </div>
+<div class="container">
+    <!-- Insert this inside your .container, above the .repo-banner -->
+<div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
+    <img src="CydiaIcon.png" 
+         width="57" 
+         height="57" 
+         alt="Repo Icon" 
+         style="-webkit-border-radius: 10px; -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.55); border: 1px solid #777777;"
+         onerror="this.src='https://placehold.co'">
+</div>
 
-        <!-- Repo Information -->
-        <h1>iTP67</h1>
-        <p class="description">Welcome to the official iTP67 package repository. Add this source to your package manager to install fixes.</p>
-
-        <!-- Quick Add Buttons for Mobile Devices -->
-        <a href="sileo://source/https://itp67.pages.dev" id="sileo-btn" class="btn primary">
-            Add to Sileo
-        </a>
-        
-        <a href="cydia://url/https://saurik.com #url/https://itp67.pages.dev" id="cydia-btn" class="btn">
-            Add to Cydia
-        </a>
-
-        <a href="zebra://sources/add/https://itp67.pages.dev" id="zebra-btn" class="btn">
-            Add to Zebra
-        </a>
-
-        <!-- Footer Info -->
-        <div class="footer">
-            &copy; 2026 iTP67. All rights reserved.
-        </div>
+    <div class="repo-banner">
+        <h1 class="repo-title">TP67's Repo</h1>
+        <div class="repo-subtitle">Tweaks and fixes for Legacy iOS</div>
     </div>
 
+    <div class="ios-group-title">Package Managers</div>
+    <ul class="ios-list">
+        <li class="ios-item">
+            <a href="javascript:void(0)" onclick="triggerCydia()" class="action-link">
+                <span class="right-align"><span class="chevron"></span></span>
+                <span>Open in Cydia</span>
+            </a>
+        </li>
+    </ul>
+
+    
 
 
+<script type="text/javascript">
+    // Strict ES3 Legacy Compatibility Layer
+    function triggerCydia() {
+        var baseAddress = window.location.href;
+        // Strip trailing slash if present to safely wrap URL variables
+        if (baseAddress.substr(-1) === '/') {
+            baseAddress = baseAddress.substr(0, baseAddress.length - 1);
+        }
+        
+        // Escape URL parameters safely using standard global functions
+        var targetSource = "cydia://url/https://itp67.pages.dev" + encodeURIComponent(baseAddress);
+        window.location.href = targetSource;
+    }
+</script>
 </body>
 </html>
