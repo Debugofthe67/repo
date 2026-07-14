@@ -151,7 +151,7 @@ rm -f index.tmp index.html.bak
 echo "Syncing changes to GitHub repository..."
 git add .
 git commit -m "Strip trailing line breaks from parsed file index structures"
-git push origin main || git push origin master
+git push origin codespace-reimagined-garbanzo-97ggw7jv495xcx55x
 
 echo "Done! The hidden line characters have been entirely stripped out."
 
