@@ -74,12 +74,11 @@ sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.
 
 
 # ==============================================================================
-# DYNAMIC HTML TWEAK INJECTION FOR LEGACY CYDIA ENGINE (ADDED AT THE END)
+# DYNAMIC HTML TWEAK INJECTION FOR LEGACY CYDIA ENGINE WITH .DEB DOWNLOAD LINKS
 # ==============================================================================
 echo "Updating index.html with live tweak metadata..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
-# This searches for anything between our specialized anchor HTML comments and removes it
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
 # 2. Parse the metadata database block-by-block and build the replacement HTML list items
@@ -98,13 +97,14 @@ while IFS= read -r line || [ -n "$line" ]; do
         CURRENT_DESC="${BASH_REMATCH[1]}"
     # Empty newline delimiter means a tweak definition block has concluded
     elif [[ -z "$line" && -n "$CURRENT_ID" ]]; then
-        # Use bundle identifier string fallback if a package name field isn't populated
+        # Fallbacks if metadata fields are empty
         [ -z "$CURRENT_NAME" ] && CURRENT_NAME="$CURRENT_ID"
         [ -z "$CURRENT_DESC" ] && CURRENT_DESC="No description provided for this jailbreak package."
         
         # Build the exact skeuomorphic list item mapping your required layout syntax
+        # The link target is now explicitly hardcoded to append .deb to the bundle identifier
         ITEM="        <li class=\"ios-item\">"
-        ITEM="${ITEM}\n            <a href=\"/debs/${CURRENT_ID}\" style=\"text-decoration:none; color:inherit; display:block;\">"
+        ITEM="${ITEM}\n            <a href=\"/debs/${CURRENT_ID}.deb\" style=\"text-decoration:none; color:inherit; display:block;\">"
         ITEM="${ITEM}\n                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
         ITEM="${ITEM}\n                <div style=\"font-weight: bold; color: #000000;\">${CURRENT_NAME}</div>"
         ITEM="${ITEM}\n                <div class=\"tweak-desc\">${CURRENT_DESC}</div>"
@@ -121,7 +121,6 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < Packages
 
 # 3. Inject the clean HTML structures directly into index.html
-# Using a temp file to securely execute pattern insertion scripts safely across iPad build nodes
 awk -v r="$HTML_LIST" '
   /<!-- TWEAKS_START -->/ { print; print r; next }
   1
