@@ -72,4 +72,62 @@ done
 # Force standard Unix LF line endings to avoid device parsing crashes
 sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.bak
 
-echo "Success! Your repository index is updated."
+
+# ==============================================================================
+# DYNAMIC HTML TWEAK INJECTION FOR LEGACY CYDIA ENGINE (ADDED AT THE END)
+# ==============================================================================
+echo "Updating index.html with live tweak metadata..."
+
+# 1. Clear out any previous dynamically generated tweak lists from index.html
+# This searches for anything between our specialized anchor HTML comments and removes it
+sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
+
+# 2. Parse the metadata database block-by-block and build the replacement HTML list items
+HTML_LIST=""
+CURRENT_NAME=""
+CURRENT_DESC=""
+CURRENT_ID=""
+
+while IFS= read -r line || [ -n "$line" ]; do
+    # Capture metadata keys using portable string filtering
+    if [[ "$line" =~ ^Package:\ (.*) ]]; then
+        CURRENT_ID="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^Name:\ (.*) ]]; then
+        CURRENT_NAME="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^Description:\ (.*) ]]; then
+        CURRENT_DESC="${BASH_REMATCH[1]}"
+    # Empty newline delimiter means a tweak definition block has concluded
+    elif [[ -z "$line" && -n "$CURRENT_ID" ]]; then
+        # Use bundle identifier string fallback if a package name field isn't populated
+        [ -z "$CURRENT_NAME" ] && CURRENT_NAME="$CURRENT_ID"
+        [ -z "$CURRENT_DESC" ] && CURRENT_DESC="No description provided for this jailbreak package."
+        
+        # Build the exact skeuomorphic list item mapping your required layout syntax
+        ITEM="        <li class=\"ios-item\">"
+        ITEM="${ITEM}\n            <a href=\"/debs/${CURRENT_ID}\" style=\"text-decoration:none; color:inherit; display:block;\">"
+        ITEM="${ITEM}\n                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
+        ITEM="${ITEM}\n                <div style=\"font-weight: bold; color: #000000;\">${CURRENT_NAME}</div>"
+        ITEM="${ITEM}\n                <div class=\"tweak-desc\">${CURRENT_DESC}</div>"
+        ITEM="${ITEM}\n            </a>"
+        ITEM="${ITEM}\n        </li>"
+        
+        HTML_LIST="${HTML_LIST}${ITEM}\n"
+        
+        # Reset tracker data fields for the next iteration loop pass
+        CURRENT_NAME=""
+        CURRENT_DESC=""
+        CURRENT_ID=""
+    fi
+done < Packages
+
+# 3. Inject the clean HTML structures directly into index.html
+# Using a temp file to securely execute pattern insertion scripts safely across iPad build nodes
+awk -v r="$HTML_LIST" '
+  /<!-- TWEAKS_START -->/ { print; print r; next }
+  1
+' index.html > index.tmp && mv index.tmp index.html
+
+# Wipe build artifacts
+rm -f index.html.bak
+
+echo "Success! Your repository index and HTML package list are completely updated."
