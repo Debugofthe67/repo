@@ -74,54 +74,67 @@ sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.
 
 
 # ==============================================================================
-# DYNAMIC HTML TWEAK INJECTION WITH DUPES/VERSION FILTERING
+# DYNAMIC HTML TWEAK INJECTION WITH DISK VERIFICATION & EXACT FILENAME MATCHING
 # ==============================================================================
-echo "Updating index.html with live tweak metadata (filtering duplicates)..."
+echo "Updating index.html with live tweak metadata (verifying physical files)..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
 # 2. Parse Packages file using an internal associative memory map via Awk
-# This logic groups duplicates by Package ID, compares versions, and outputs the highest version
-HTML_LIST=$(awk '
+# Pass a list of actual physical files currently in the debs folder to Awk for absolute validation
+EXISTING_FILES=$(find ./debs -maxdepth 1 -type f -name "*.deb" | paste -sd "," -)
+
+HTML_LIST=$(awk -v disk_files="$EXISTING_FILES" '
 BEGIN {
-    # Define field delimiters
     RS = ""
     FS = "\n"
+    # Split the existing disk files comma list into an array for instant lookups
+    split(disk_files, allowed, ",")
+    for (f in allowed) {
+        real_paths[allowed[f]] = 1
+    }
 }
 {
-    # Loop through lines of a single tweak block
     id = ""
     name = ""
     desc = ""
     ver = ""
+    filename = ""
     
     for (i = 1; i <= NF; i++) {
         if ($i ~ /^Package:/) { sub(/^Package: /, "", $i); id = $i }
         if ($i ~ /^Name:/) { sub(/^Name: /, "", $i); name = $i }
         if ($i ~ /^Description:/) { sub(/^Description: /, "", $i); desc = $i }
         if ($i ~ /^Version:/) { sub(/^Version: /, "", $i); ver = $i }
+        if ($i ~ /^Filename:/) { sub(/^Filename: /, "", $i); filename = $i }
     }
     
-    if (id != "") {
-        # Fallbacks for empty metadata fields
-        if (name == "") name = id
-        if (desc == "") desc = "No description provided for this jailbreak package."
-        
-        # If this package is new, or if this version is higher than our saved version, track it
-        # Note: Simple string/alphanumeric verification loop for lightweight environments
-        if (!(id in saved_version) || ver > saved_version[id]) {
-            saved_version[id] = ver
-            saved_name[id] = name
-            saved_desc[id] = desc
+    if (id != "" && filename != "") {
+        # CRITICAL VALIDATION STEP: Verify the exact file path explicitly matches a real file on the disk
+        if (real_paths[filename] == 1) {
+            if (name == "") name = id
+            if (desc == "") desc = "No description provided for this jailbreak package."
+            
+            # Check for duplicates and isolate the highest version instance that actually exists
+            if (!(id in saved_version) || ver > saved_version[id]) {
+                saved_version[id] = ver
+                saved_name[id] = name
+                saved_desc[id] = desc
+                saved_file[id] = filename
+            }
         }
     }
 }
 END {
-    # Generate the clean skeuomorphic HTML components for the single highest versions
+    # Generate the clean skeuomorphic HTML using the verified real parsed file paths
     for (id in saved_version) {
+        # Strip the leading dot from ./debs/... so the web path outputs as cleanly /debs/...
+        clean_url = saved_file[id]
+        sub(/^\./, "", clean_url)
+        
         print "        <li class=\"ios-item\">"
-        print "            <a href=\"/debs/" id ".deb\" style=\"text-decoration:none; color:inherit; display:block;\">"
+        print "            <a href=\"" clean_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
         print "                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
         print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93; font-weight:normal;\">v" saved_version[id] "</span></div>"
         print "                <div class=\"tweak-desc\">" saved_desc[id] "</div>"
@@ -137,6 +150,6 @@ awk -v r="$HTML_LIST" '
 ' index.html > index.tmp && mv index.tmp index.html
 
 # Wipe build artifacts
-rm -f index.html.bak
+rm -f index.tmp index.html.bak
 
-echo "Success! Your repository index and HTML package list are completely updated."
+echo "Success! Your package list now matches exact, verified file assets on disk."
