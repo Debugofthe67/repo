@@ -5,19 +5,19 @@ Version: 1.0
 Codename: ios
 Architectures: iphoneos-arm iphoneos-arm64
 Components: main
-Description: Automated repository for repo containing 24 active tweaks. Updated on 2026-07-13.
+Description: Automated repository for repo containing 24 active tweaks. Updated on 2026-07-14.
 MD5Sum:
  f8d97f9804c1aa09db255f91d20dbcdc 20431 Packages
- c0f76f15e02ed1627c7e4f499f990250 5313 Packages.gz
+ a88904f6a0e3614f3a52423f418c4878 5313 Packages.gz
  9bb8075fea8bd15d18b581b8b684fd47 5506 Packages.bz2
  32557a200e0a2871c30b32157c48495c 4936 Packages.xz
 SHA1:
  827f4096f64c522900bac525f9f2a2870f156772 20431 Packages
- a685e754b059a1b9e0710679bdf263f0511a6882 5313 Packages.gz
+ e9eaa7c88a16a118956fc03957059a903fa520e4 5313 Packages.gz
  8f83848541b3b494bfd1a84b9e5eed683f8fa37a 5506 Packages.bz2
  36e065430cdbc4a8fb5424f8bbe738bb71707ae6 4936 Packages.xz
 SHA256:
  40899715d6dae65d12d9ba96c4da76c074029f6b62d39119f6b4785a6403eeff 20431 Packages
- 8855b22c72c57c73ab434fb52a8e24af13e571f34711d23fe26e2c16959ccf17 5313 Packages.gz
+ fa1347675dcd71ccbe9b0f1246a11b1d570fe3fd2304eabb607bb6a791ef14c0 5313 Packages.gz
  4badeffbb40e9da8fd2ec662c5a0a28f25e4399fd0ce922f90cdebe5e63d5db6 5506 Packages.bz2
  5d332a56031a332660cdc548651d589e8c60d0ae47203a656d25cbe9fef9982d 4936 Packages.xz

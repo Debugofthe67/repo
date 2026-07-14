@@ -74,53 +74,63 @@ sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.
 
 
 # ==============================================================================
-# DYNAMIC HTML TWEAK INJECTION FOR LEGACY CYDIA ENGINE WITH .DEB DOWNLOAD LINKS
+# DYNAMIC HTML TWEAK INJECTION WITH DUPES/VERSION FILTERING
 # ==============================================================================
-echo "Updating index.html with live tweak metadata..."
+echo "Updating index.html with live tweak metadata (filtering duplicates)..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
-# 2. Parse the metadata database block-by-block and build the replacement HTML list items
-HTML_LIST=""
-CURRENT_NAME=""
-CURRENT_DESC=""
-CURRENT_ID=""
+# 2. Parse Packages file using an internal associative memory map via Awk
+# This logic groups duplicates by Package ID, compares versions, and outputs the highest version
+HTML_LIST=$(awk '
+BEGIN {
+    # Define field delimiters
+    RS = ""
+    FS = "\n"
+}
+{
+    # Loop through lines of a single tweak block
+    id = ""
+    name = ""
+    desc = ""
+    ver = ""
+    
+    for (i = 1; i <= NF; i++) {
+        if ($i ~ /^Package:/) { sub(/^Package: /, "", $i); id = $i }
+        if ($i ~ /^Name:/) { sub(/^Name: /, "", $i); name = $i }
+        if ($i ~ /^Description:/) { sub(/^Description: /, "", $i); desc = $i }
+        if ($i ~ /^Version:/) { sub(/^Version: /, "", $i); ver = $i }
+    }
+    
+    if (id != "") {
+        # Fallbacks for empty metadata fields
+        if (name == "") name = id
+        if (desc == "") desc = "No description provided for this jailbreak package."
+        
+        # If this package is new, or if this version is higher than our saved version, track it
+        # Note: Simple string/alphanumeric verification loop for lightweight environments
+        if (!(id in saved_version) || ver > saved_version[id]) {
+            saved_version[id] = ver
+            saved_name[id] = name
+            saved_desc[id] = desc
+        }
+    }
+}
+END {
+    # Generate the clean skeuomorphic HTML components for the single highest versions
+    for (id in saved_version) {
+        print "        <li class=\"ios-item\">"
+        print "            <a href=\"/debs/" id ".deb\" style=\"text-decoration:none; color:inherit; display:block;\">"
+        print "                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
+        print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93; font-weight:normal;\">v" saved_version[id] "</span></div>"
+        print "                <div class=\"tweak-desc\">" saved_desc[id] "</div>"
+        print "            </a>"
+        print "        </li>"
+    }
+}' Packages)
 
-while IFS= read -r line || [ -n "$line" ]; do
-    # Capture metadata keys using portable string filtering
-    if [[ "$line" =~ ^Package:\ (.*) ]]; then
-        CURRENT_ID="${BASH_REMATCH[1]}"
-    elif [[ "$line" =~ ^Name:\ (.*) ]]; then
-        CURRENT_NAME="${BASH_REMATCH[1]}"
-    elif [[ "$line" =~ ^Description:\ (.*) ]]; then
-        CURRENT_DESC="${BASH_REMATCH[1]}"
-    # Empty newline delimiter means a tweak definition block has concluded
-    elif [[ -z "$line" && -n "$CURRENT_ID" ]]; then
-        # Fallbacks if metadata fields are empty
-        [ -z "$CURRENT_NAME" ] && CURRENT_NAME="$CURRENT_ID"
-        [ -z "$CURRENT_DESC" ] && CURRENT_DESC="No description provided for this jailbreak package."
-        
-        # Build the exact skeuomorphic list item mapping your required layout syntax
-        # The link target is now explicitly hardcoded to append .deb to the bundle identifier
-        ITEM="        <li class=\"ios-item\">"
-        ITEM="${ITEM}\n            <a href=\"/debs/${CURRENT_ID}.deb\" style=\"text-decoration:none; color:inherit; display:block;\">"
-        ITEM="${ITEM}\n                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
-        ITEM="${ITEM}\n                <div style=\"font-weight: bold; color: #000000;\">${CURRENT_NAME}</div>"
-        ITEM="${ITEM}\n                <div class=\"tweak-desc\">${CURRENT_DESC}</div>"
-        ITEM="${ITEM}\n            </a>"
-        ITEM="${ITEM}\n        </li>"
-        
-        HTML_LIST="${HTML_LIST}${ITEM}\n"
-        
-        # Reset tracker data fields for the next iteration loop pass
-        CURRENT_NAME=""
-        CURRENT_DESC=""
-        CURRENT_ID=""
-    fi
-done < Packages
-
-# 3. Inject the clean HTML structures directly into index.html
+# 3. Inject the filtered clean HTML structures directly into index.html
 awk -v r="$HTML_LIST" '
   /<!-- TWEAKS_START -->/ { print; print r; next }
   1
