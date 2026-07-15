@@ -15,10 +15,33 @@ echo "Cleaning up old indices..."
 rm -f Packages Packages.gz Packages.bz2 Packages.xz Release Release.gpg
 
 echo "Scanning Debian packages..."
-# FIX FOR IPHONE 4S: Uses an empty extra fields map to force preservation of legacy Cydia headers
-touch extra_fields
-dpkg-scanpackages -m -e extra_fields ./debs /dev/null > Packages
-rm -f extra_fields
+dpkg-scanpackages -m ./debs /dev/null > Packages
+
+# FIX: Safely fix missing Name fields using Python without breaking real names
+python3 -c '
+import os
+if os.path.exists("Packages"):
+    with open("Packages", "r") as f:
+        data = f.read()
+    paragraphs = data.split("\n\n")
+    fixed_paragraphs = []
+    for p in paragraphs:
+        if not p.strip(): continue
+        lines = p.split("\n")
+        has_name = any(l.startswith("Name:") for l in lines)
+        if not has_name:
+            pkg_id = ""
+            for l in lines:
+                if l.startswith("Package:"):
+                    pkg_id = l.replace("Package:", "").strip()
+            if pkg_id:
+                # Find out where to insert the missing Name field
+                lines.insert(1, f"Name: {pkg_id}")
+        fixed_paragraphs.append("\n".join(lines))
+    with open("Packages", "w") as f:
+        f.write("\n\n".join(fixed_paragraphs) + "\n\n")
+'
+
 
 # LEGACY FIX: Inject a fallback Name: flag if dpkg-scanpackages leaves a tweak missing one
 awk '/^Package:/ {pkg=$2} /^Description:/ && !name_found {print "Name: " pkg} {if($0 ~ /^Name:/) name_found=1; else if($0 == "") name_found=0; print}' Packages > Packages.tmp && mv Packages.tmp Packages
