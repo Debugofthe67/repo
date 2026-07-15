@@ -4,6 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iTP67</title>
+    <!-- For standard computer web browsers viewing your repository site -->
+<link rel="icon" type="image/x-icon" href="CydiaIcon.png">
+
+<!-- For legacy iOS 6 Safari engines when a user bookmarks your site to their home screen -->
+<link rel="apple-touch-icon" href="CydiaIcon.png">
+
     <style type="text/css">
         /* Classic iOS 6 Canvas Textured Background */
         body {
@@ -62,15 +68,18 @@
         }
 
         /* Legacy Table Containers */
-        .ios-list {
-            background-color: #ffffff;
-            border: 1px solid #ababab;
-            -webkit-border-radius: 8px;
-            padding: 0;
-            margin: 0 0 20px 0;
-            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            list-style: none;
-        }
+.ios-list {
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    -webkit-border-radius: 8px;
+    padding: 0;
+    margin: 0 0 20px 0;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    list-style: none;
+    /* CRITICAL FIX: Cuts off any child elements leaking outside the rounded corners */
+    overflow: hidden; 
+}
+
 
         .ios-item {
             border-bottom: 1px solid #e0e0e0;
@@ -94,17 +103,25 @@
             margin: -12px -15px;
             padding: 12px 15px;
         }
+a.action-link {
+    display: block;
+    text-decoration: none;
+    background-color: #ffffff;
+    /* Forces the button row to match native iOS 6 cell heights */
+    min-height: 44px; 
+    line-height: 44px;
+    padding: 0 15px;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
 
-        a.action-link:active {
-            background-color: #007aff;
-            color: #ffffff;
-        }
+.right-align {
+    float: right;
+    /* Vertically centers the chevron inside a 44px cell height */
+    margin-top: 16px; 
+}
 
-        /* Floating right layout components for non-flex engines */
-        .right-align {
-            float: right;
-            margin-top: 4px;
-        }
 
         /* Pure CSS Classic iOS Chevron (Compatible with WebKit 536) */
         .chevron {
@@ -132,6 +149,18 @@
         .clearfix {
             clear: both;
         }
+        .ios-info-box {
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    -webkit-border-radius: 8px;
+    padding: 14px;
+    margin: 15px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    color: #000000;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
     </style>
 </head>
 <body>
@@ -152,15 +181,18 @@
         <div class="repo-subtitle">Tweaks and fixes for Legacy iOS</div>
     </div>
 
-    <div class="ios-group-title">Package Managers</div>
+        <div class="ios-group-title">Package Managers</div>
     <ul class="ios-list">
-        <li class="ios-item">
-            <a href="javascript:void(0)" onclick="triggerCydia()" class="action-link">
+        <li class="ios-item" style="padding: 0;">
+            <a href="cydia://url/https://cydia.saurik.com/api/share#?source=https://debugofthe67.github.io/repo/" target="_top" class="action-link" style="display: block; width: 100%; height: 100%; box-sizing: border-box; padding: 12px 15px; text-decoration: none;">
                 <span class="right-align"><span class="chevron"></span></span>
-                <span>Open in Cydia</span>
+                <span>Add to Cydia</span>
             </a>
         </li>
     </ul>
+
+
+
 
  <div class="ios-group-title">Available Packages</div>
     <ul class="ios-list">
@@ -238,23 +270,50 @@
 <!-- TWEAKS_END -->
     </ul>
 
+<div class="ios-group-title">Security Certificates</div>
+<div class="ios-info-box" style="margin-bottom: 10px;">
+    Older versions of iPhone OS aren't new enough to have modern certificate authorities trusted, meaning only sites using older certificate authorities are able to have a secure connection.
+    <br><br>
+    Here are links to modern Certificate Authorities that may not be trusted on older devices (some other complications may prevent sites using these certificates from working, those can be fixed by these.)
+</div>
+
+<!-- NATIVE LOOKING SUB-LIST FOR THE DIRECT PROFILE DOWNLOADS -->
+<ul class="ios-list">
+    <li class="ios-item" style="padding: 0; margin: 0; min-height: 44px;">
+        <a href="https://tlsroot.litten.ca/beeg.mobileconfig" target="_top" class="action-link">
+            <span class="right-align"><span class="chevron"></span></span>
+            <span style="color: #000000; font-weight: bold; font-size: 16px; vertical-align: middle;">Install Signed by Hanabi (iOS 5+)</span>
+        </a>
+    </li>
+    <li class="ios-item" style="padding: 0; margin: 0; min-height: 44px;">
+        <a href="https://tlsroot.litten.ca/beeg.unsigned.mobileconfig" target="_top" class="action-link">
+            <span class="right-align"><span class="chevron"></span></span>
+            <span style="color: #000000; font-weight: bold; font-size: 16px; vertical-align: middle;">Install Unsigned</span>
+        </a>
+    </li>
+</ul>
+
+
+
 
     
 
 
 <script type="text/javascript">
-    // Strict ES3 Legacy Compatibility Layer
-    function triggerCydia() {
-        var baseAddress = window.location.href;
-        // Strip trailing slash if present to safely wrap URL variables
-        if (baseAddress.substr(-1) === '/') {
-            baseAddress = baseAddress.substr(0, baseAddress.length - 1);
+    // Hardcoding your true live repo URL prevents Codespaces from creating broken links
+    var repoURL = "https://debugofthe67.github.io/repo/";
+
+    function triggerManager() {
+        var base = repoURL;
+        // Strip trailing slash if present
+        if (base.substr(-1) === '/') {
+            base = base.substr(0, base.length - 1);
         }
         
-        // Escape URL parameters safely using standard global functions
-        var targetSource = "cydia://url/https://debugofthe67.github.io/repo/" + encodeURIComponent(baseAddress);
-        window.location.href = targetSource;
+        // Direct iOS 6 URL payload sequence for Cydia
+        window.location.href = "cydia://url/https://saurik.com/" + encodeURIComponent(base);
     }
 </script>
+
 </body>
 </html>
