@@ -4,6 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>iTP67</title>
+    <!-- For standard computer web browsers viewing your repository site -->
+<link rel="icon" type="image/x-icon" href="CydiaIcon.png">
+
+<!-- For legacy iOS 6 Safari engines when a user bookmarks your site to their home screen -->
+<link rel="apple-touch-icon" href="CydiaIcon.png">
+
     <style type="text/css">
         /* Classic iOS 6 Canvas Textured Background */
         body {
@@ -62,15 +68,18 @@
         }
 
         /* Legacy Table Containers */
-        .ios-list {
-            background-color: #ffffff;
-            border: 1px solid #ababab;
-            -webkit-border-radius: 8px;
-            padding: 0;
-            margin: 0 0 20px 0;
-            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            list-style: none;
-        }
+.ios-list {
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    -webkit-border-radius: 8px;
+    padding: 0;
+    margin: 0 0 20px 0;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    list-style: none;
+    /* CRITICAL FIX: Cuts off any child elements leaking outside the rounded corners */
+    overflow: hidden; 
+}
+
 
         .ios-item {
             border-bottom: 1px solid #e0e0e0;
@@ -94,17 +103,25 @@
             margin: -12px -15px;
             padding: 12px 15px;
         }
+a.action-link {
+    display: block;
+    text-decoration: none;
+    background-color: #ffffff;
+    /* Forces the button row to match native iOS 6 cell heights */
+    min-height: 44px; 
+    line-height: 44px;
+    padding: 0 15px;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
 
-        a.action-link:active {
-            background-color: #007aff;
-            color: #ffffff;
-        }
+.right-align {
+    float: right;
+    /* Vertically centers the chevron inside a 44px cell height */
+    margin-top: 16px; 
+}
 
-        /* Floating right layout components for non-flex engines */
-        .right-align {
-            float: right;
-            margin-top: 4px;
-        }
 
         /* Pure CSS Classic iOS Chevron (Compatible with WebKit 536) */
         .chevron {
@@ -132,6 +149,18 @@
         .clearfix {
             clear: both;
         }
+        .ios-info-box {
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    -webkit-border-radius: 8px;
+    padding: 14px;
+    margin: 15px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    color: #000000;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
     </style>
 </head>
 <body>
@@ -240,6 +269,31 @@
         </li>
 <!-- TWEAKS_END -->
     </ul>
+
+<div class="ios-group-title">Security Certificates</div>
+<div class="ios-info-box" style="margin-bottom: 10px;">
+    Older versions of iPhone OS aren't new enough to have modern certificate authorities trusted, meaning only sites using older certificate authorities are able to have a secure connection.
+    <br><br>
+    Here are links to modern Certificate Authorities that may not be trusted on older devices (some other complications may prevent sites using these certificates from working, those can be fixed by these.)
+</div>
+
+<!-- NATIVE LOOKING SUB-LIST FOR THE DIRECT PROFILE DOWNLOADS -->
+<ul class="ios-list">
+    <li class="ios-item" style="padding: 0; margin: 0; min-height: 44px;">
+        <a href="https://tlsroot.litten.ca/beeg.mobileconfig" target="_top" class="action-link">
+            <span class="right-align"><span class="chevron"></span></span>
+            <span style="color: #000000; font-weight: bold; font-size: 16px; vertical-align: middle;">Install Signed by Hanabi (iOS 5+)</span>
+        </a>
+    </li>
+    <li class="ios-item" style="padding: 0; margin: 0; min-height: 44px;">
+        <a href="https://tlsroot.litten.ca/beeg.unsigned.mobileconfig" target="_top" class="action-link">
+            <span class="right-align"><span class="chevron"></span></span>
+            <span style="color: #000000; font-weight: bold; font-size: 16px; vertical-align: middle;">Install Unsigned</span>
+        </a>
+    </li>
+</ul>
+
+
 
 
     
