@@ -3,21 +3,21 @@ Label: TP67
 Suite: stable
 Version: 1.0
 Codename: ios
-Architectures: iphoneos-arm
+Architectures: iphoneos-arm iphoneos-arm64
 Components: main
 Description: Automated repository for TP67 containing 24 active tweaks. Updated on 2026-07-15.
 MD5Sum:
-  33f268196a4cf2927c63e228a2b71429 21070 Packages
-  857c045b38e825f03b74492a9812a8c8 5365 Packages.gz
-  2f95fe39ca97139556c44f0825b8274a 5546 Packages.bz2
-  2e038d74b0b19d8d745154d8deafc24d 4984 Packages.xz
+ f8d97f9804c1aa09db255f91d20dbcdc 20431 Packages
+ 02197c73616e96e2763c42a0eaac5d0e 5313 Packages.gz
+ 9bb8075fea8bd15d18b581b8b684fd47 5506 Packages.bz2
+ 32557a200e0a2871c30b32157c48495c 4936 Packages.xz
 SHA1:
-  f0f280bb338ad6f861fe992ab427a63f6da44556 21070 Packages
-  c6aef8b6e82a4ace09c2604773365e252f8a4641 5365 Packages.gz
-  36a8c5ae08ebb1e2c87474e1eadaff318f746d94 5546 Packages.bz2
-  59cfe4ebf8f8d82695fcda4f13daa651363b5b99 4984 Packages.xz
+ 827f4096f64c522900bac525f9f2a2870f156772 20431 Packages
+ 2c3fb3e77ea9df2e9acb79f66bbb6f9f73188f79 5313 Packages.gz
+ 8f83848541b3b494bfd1a84b9e5eed683f8fa37a 5506 Packages.bz2
+ 36e065430cdbc4a8fb5424f8bbe738bb71707ae6 4936 Packages.xz
 SHA256:
-  a578e22752f8d1d28e8e3ec3a3f3c528804b1b575f0d9eb7b42c77016c0415aa 21070 Packages
-  63a02e5ee07cd3f67ff1db3f4596f87300ae99b84e0e6a48b8abaddac0384be7 5365 Packages.gz
-  fe84e30e36d1e6acd13ec25db6fcd64a6476d4382e5c4f1927df2bb384160111 5546 Packages.bz2
-  8228957d87558c6496e7efe93b876bb6a5e6ebdceef60b606498f9f75e49ae84 4984 Packages.xz
+ 40899715d6dae65d12d9ba96c4da76c074029f6b62d39119f6b4785a6403eeff 20431 Packages
+ cfbab292b52ec56b0468219acb6cacf623ffce92119d69b476111996a0b84329 5313 Packages.gz
+ 4badeffbb40e9da8fd2ec662c5a0a28f25e4399fd0ce922f90cdebe5e63d5db6 5506 Packages.bz2
+ 5d332a56031a332660cdc548651d589e8c60d0ae47203a656d25cbe9fef9982d 4936 Packages.xz
