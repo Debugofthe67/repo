@@ -14,6 +14,7 @@ SHA1: e0fa412cb3c26718887edd834804c88909297079
 SHA256: 0036f28fcbdb165d4f58968a237ca9fe7b6ed33fea25b9a5eb1fc141f6bf5a09
 Section: Tweaks
 Homepage: https://cydia.akemi.ai/
+Name: ai.akemi.appsyncunified
 Description: Enables the ability to install unsigned/fakesigned iOS applications.
 Author: Karen/あけみ, Linus Yang <karen@akemi.ai>
 Depiction: https://cydia.akemi.ai/?page/ai.akemi.appsyncunified
@@ -35,6 +36,7 @@ SHA1: d00d2667c0d5421dddfc70a2734f1d63b972a535
 SHA256: 2bdaac72a6d1b006309b7dd28f51b1e3d351d3d8758fc9f08ca670f1d71eb382
 Section: Tweaks
 Homepage: https://cydia.akemi.ai/
+Name: ai.akemi.appsyncunified
 Description: Enables the ability to install unsigned/fakesigned iOS applications.
 Author: Karen/あけみ, Linus Yang <karen@akemi.ai>
 Depiction: https://cydia.akemi.ai/?page/ai.akemi.appsyncunified
@@ -52,6 +54,7 @@ MD5sum: 6bea6b3f594d8b6374b2334595b79098
 SHA1: fda1964216cb67a1d75526daa7f10ccab25bbc13
 SHA256: ac457a661dd8ddc785e1ab3ff0b3d2b7af9a0dff09e39e4e6979a194500bdcac
 Section: Tweaks
+Name: bag.xml.tuberepair
 Description: TubeRepair is a tweak that redirects API traffic from the classic YouTube app, and the App Store YouTube app to a designated custom server. You could also just say that it fixes both applications. For assistance refer to the guide (https://tuberepair.bag-xml.com/guide/)
 Author: bag.xml, Requis
 Depiction: https://cydia.skyglow.es/depictions/com.skyglow.tuberepair/depictions/index.html
@@ -70,6 +73,7 @@ MD5sum: 7980faa2ee5ce03e934ca73dccc6d082
 SHA1: 3abb55c61184ebccb077b2bd3e690c2a7236624a
 SHA256: 8dc0fb828a3a854832f5fbcf6b7e8cdc34db6a18428fd1bb824c871daa62be10
 Section: Tweaks
+Name: bag.xml.tuberepair
 Description: TubeRepair is a tweak that redirects YouTube API traffic from the classic YouTube app, and the App Store YouTube app to a designated custom server. You could also just say that it fixes both applications. For assistance refer to the guide (https://tuberepair.bag-xml.com/guide/)
 Author: bag.xml, Requis
 Depiction: https://cydia.skyglow.es/depictions/com.skyglow.tuberepair/depictions/index.html
@@ -88,6 +92,7 @@ MD5sum: 0327b6b664d0aa4e995711d97b4f9d87
 SHA1: 63cd39d5a35083aefc4c29c5cba374b7c179118b
 SHA256: 473e78c61932d149c35c105fbcad00145314cc9b668ce207745ae6dc7596df59
 Section: Tweaks
+Name: bag.xml.tuberepair
 Description: TubeRepair is a tweak that redirects YouTube API traffic from the classic YouTube app, and the App Store YouTube app to a designated custom server. You could also just say that it fixes both applications. For assistance refer to the guide (https://tuberepair.bag-xml.com/guide/)
 Author: bag.xml, Requis
 Depiction: https://cydia.skyglow.es/depictions/com.skyglow.tuberepair/depictions/index.html
@@ -106,6 +111,7 @@ MD5sum: 0a0b6a1a538c9aa369ef905fc6d1eb68
 SHA1: 2ccb6f9877e86a38c59b55c97f529beb37ebe866
 SHA256: a0728c4753df3625d847ba79c5128123020698f5c22f1890a2eb1b9da659727e
 Section: Tweaks
+Name: bag.xml.tuberepair
 Description: TubeRepair is a tweak that redirects YouTube API traffic from the classic YouTube app, and the App Store YouTube app to a designated custom server. You could also just say that it fixes both applications. For assistance refer to the guide (https://tuberepair.bag-xml.com/guide/)
 Author: bag.xml, Requis
 Depiction: https://cydia.skyglow.es/depictions/com.skyglow.tuberepair/depictions/index.html
@@ -124,6 +130,7 @@ MD5sum: 9838724bcbd0d04e44a62c31baf2f182
 SHA1: af42f56aab86f98fad9b4a8503808a4490db7e0e
 SHA256: cad60e92e89b067cc8c605c3975210122a2129ccab907244d298cdd02da962dd
 Section: Tweaks
+Name: bag.xml.tuberepair
 Description: TubeRepair is a tweak that redirects YouTube API traffic from the classic YouTube app, and the App Store YouTube app to a designated custom server. You could also just say that it fixes both applications. For assistance refer to the guide (https://tuberepair.bag-xml.com/guide/)
 Author: bag.xml, Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.tuberepair/depictions/index.html
@@ -142,6 +149,7 @@ MD5sum: 3e0b7be729b706d48f04245076ba2ff4
 SHA1: 0bd5c8da08798395033b2b60423262ec14eed53d
 SHA256: 16867fd59c219c328740262dad771796ff5713330ce0e48d562ed0f896de73b4
 Section: Tweaks
+Name: com.mosquito.itunesstorex
 Description: This tweak fixes the App Store (Particularly every aspect of the iTunes Store too). It fixes every app's connection issues with the iTunes Store, examples are: Podcasts, iBooks, Videos, Music, iTunes and of course, the App Store. This tweak also fixes Apple ID Authentication, downloads and the pwning of apps on iOS 6 (the Apple ID prompt bypass), since that's been impossible since apple shut of the iTunes Store on anything lower than 7
 Author: Requis (ObscureMosquito), Daph (Mali)
 Name: iTunesStoreX
@@ -158,6 +166,7 @@ MD5sum: 764ee3a22e0fd5ac0b4c7e651cf5e510
 SHA1: dcfc7593a6738e6c76df95e7ab0b60ce08437750
 SHA256: 8f6ef70f41611de1fa43ff11f61ba6371a90999bba510973c9b21af8fe3af5a8
 Section: Tweaks
+Name: com.mosquito.itunesstorex
 Description: This tweak fixes the App Store (Particularly every aspect of the iTunes Store too). It fixes every app's connection issues with the iTunes Store, examples are: Podcasts, iBooks, Videos, Music, iTunes and of course, the App Store. This tweak also fixes Apple ID Authentication, downloads and the pwning of apps on iOS 6 (the Apple ID prompt bypass), since that's been impossible since apple shut of the iTunes Store on anything lower than 7
 Author: Requis (ObscureMosquito), Daph (Mali)
 Name: iTunesStoreX
@@ -172,6 +181,7 @@ MD5sum: 8ce0d35bc59e695239ec87f711446c1f
 SHA1: a4cedf49cf2620007b84454c810e9d4df255989a
 SHA256: c8d91a183cf0131a87d6bf7a03fd67c12e817a41787a137eb026a7f101fb68af
 Section: Tweak
+Name: com.nostalgios.protube6
 Description: Protube iOS 6 2023
 Author: iOS6NeverDie
 Name: Protube iOS6 2023
@@ -190,6 +200,7 @@ SHA256: 22f79f5eac60d3a9513d98e724e894575b528d10dffdd7c81e7044b5121742fa
 Section: Tweaks
 Priority: optional
 Homepage: http://rpetri.ch/cydia/sslpatch
+Name: com.rpetrich.sslpatch
 Description: Fix for CVE-2014-1266 on iOS 6.0-7.0.5 firmwares
 Tag: purpose::extension
 Author: Ryan Petrich <rpetrich+sslpatch@gmail.com>
@@ -210,6 +221,7 @@ MD5sum: 7c2b063cc87fc4771cf2180258bcdffc
 SHA1: ebd2bd783e6c01d88e5609f0927fd0ffce8987ec
 SHA256: 26ba4b5e7d9a03e295ace84a0698f378ffde1260130b0c402f559264035d741d
 Section: Tweaks
+Name: com.skyglow.itunesstorex
 Description: This tweak fixes any storefront. It fixes every app's connection issues with the iTunes Store, as of recent changes made by Apple, this tweak does not allow to download apps.
 Author: Requis (ObscureMosquito), Daph (Mali)
 Name: iTunesStoreX
@@ -226,6 +238,7 @@ MD5sum: fe7579e05ac248a38df0a065fc92f6dc
 SHA1: 06ab5ef2a70520f97669afec34f16a2b3e765ba1
 SHA256: c8ff8a6d141ed09f28a9ae8c8bdb793dfaddd5cc0b221065f5fe02d663038c1c
 Section: Tweaks
+Name: com.skyglow.itunesstorex
 Description: This tweak fixes any storefront. It fixes every app's connection issues with the iTunes Store, as of recent changes made by Apple, this tweak does not allow to download apps.
 Author: Requis, Bag.xml
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.itunesstorex/depictions/index.html
@@ -244,6 +257,7 @@ MD5sum: 8b40111dacc1b363d87a59b05abb9d1b
 SHA1: 4bd1cd04b07e66c3dd5c2654826d0d1c7056c770
 SHA256: e961e45c5d43722ce373206de6cc30ba8e5a1c3fc6ade0831b7e4576bf009c6d
 Section: Tweaks
+Name: com.skyglow.mapsx
 Description: This tweak fixes Apple Maps and any MapView in the system (asking Siri for location...) by redirecting various dead URI.
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.mapsx/depictions/index.html
@@ -262,6 +276,7 @@ MD5sum: 1d90678d3e53992238f9f895d1bb451d
 SHA1: 1b9ed91e75d7b1e4d92fb3d41032503e1fa0127b
 SHA256: 9389f79744c4c83d1edcda032a81ad67129f007b36cb3f4c5feb2f5902f75a69
 Section: Tweaks
+Name: com.skyglow.mapsx
 Description: This tweak fixes Apple Maps and any MapView in the system (asking Siri for location...) by redirecting various dead URI.
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.mapsx/depictions/index.html
@@ -280,6 +295,7 @@ MD5sum: 96ead83899ea3b5ad0b62572eb4246bc
 SHA1: dbf746fcd0e259c89112132a6f95745075287080
 SHA256: f858a8c40ae49dffbe8e736a8584a0fdc5f7ef018bfb586fdfe3431b51a1b002
 Section: Tweaks
+Name: com.skyglow.mapsx
 Description: This tweak fixes Apple Maps and any MapView in the system (asking Siri for location...).
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.mapsx/depictions/index.html
@@ -298,6 +314,7 @@ MD5sum: b6e4b4339f4bcf2ebe24134f8c56061e
 SHA1: 467236de157315ee66bb818f5c89bd09cb7418e1
 SHA256: 26ba936f2b974b280e90f466de7d710829b578bb4a0d28c956a655aa239815fd
 Section: Tweaks
+Name: com.skyglow.mapsx
 Description: This tweak fixes Apple Maps and any MapView in the system (asking Siri for location...).
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.mapsx/depictions/index.html
@@ -316,6 +333,7 @@ MD5sum: 2cc527709d172622ce444d6c2822dcdd
 SHA1: bcfdf0325e230b7fd4c109e93976cd5eca03e341
 SHA256: b6e084265211c1a4f1d685c397c5ae4f975eff1b6d6589592d929806fdfffdfe
 Section: Tweaks
+Name: com.skyglow.stocksx
 Description: Fix the stocks app from iPhoneOS 2 to iOS 7 by redirecting requests to my servers!
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.stocksx/depictions/index.html
@@ -333,6 +351,7 @@ MD5sum: 76e962044616d32d7a6da954880867eb
 SHA1: cedd8f68907e7ffdbdb9d2875d00df4a38d87e41
 SHA256: 615f8e5f77372031af23da9462624b2b032463106e08b23d4bca4afc77bdece4
 Section: Tweaks
+Name: com.skyglow.stocksx
 Description: Fix the stocks app from iPhoneOS 2 to iOS 7 by redirecting requests to my servers!
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.stocksx/depictions/index.html
@@ -350,6 +369,7 @@ MD5sum: ae8a93a017aa55e8516592166f594e5b
 SHA1: fa7d355eaefab27b6571315fc2af5c9c9757c410
 SHA256: ba26253382cf3f902953f995381cc3e32d6cda5a5f3785ef5fe4257d925a49e6
 Section: Tweaks
+Name: com.skyglow.weatherx
 Description: WeatherX but using Requi's servers
 Author: Requis
 Name: WeatherX
@@ -367,6 +387,7 @@ MD5sum: 6b9c5e1f1e858b92925bda5118d4e70d
 SHA1: f51b4f8363a310eca96acbe6e3d45126a636c564
 SHA256: eba176627f1e77a0083922e1e2dd90a4569d1d6a674890f028b9b1f7819aa4f7
 Section: Tweaks
+Name: com.skyglow.weatherx
 Description: WeatherX but using Requi's servers, now also fixes weather widget in the notification center.
 Author: Requis
 Name: WeatherX
@@ -383,6 +404,7 @@ MD5sum: a6261fcbcbe36290f4aaa25357744d9e
 SHA1: a6e6caabf056d05b8f961165123917e9eff9c846
 SHA256: c7648684aff258bfa831b2e7c317361dad7c300d24505367c622d8b84ef6d67b
 Section: Tweaks
+Name: com.skyglow.weatherx
 Description: Fix iOS's weather app from iPhoneOS 2 to iOS 7, the weather widget in the notification center, and the temperature in the iPad clock app!
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.weatherx/depictions/index.html
@@ -400,6 +422,7 @@ MD5sum: cf752c23741cfa2513444f2bcc870459
 SHA1: e3cb5fe093a7ba8e51a0ea8646c513e6490e1626
 SHA256: c78c056f2c6606081f2114ceaa4d556bb7802f39647ebc006d26a5c444c65eea
 Section: Tweaks
+Name: com.skyglow.weatherx
 Description: Fix iOS's weather app from iPhoneOS 2 to iOS 7, the weather widget in the notification center, and the temperature in the iPad clock app!
 Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.weatherx/depictions/index.html
@@ -419,6 +442,7 @@ SHA1: 018ccd5f56ddd90d3ba3a391e5cf6c7ddce2bae9
 SHA256: aa7417489ad4d823713905347804b3fd1f481b710ec2512bed9d22b356875454
 Section: Networking
 Priority: important
+Name: openssh
 Description: secure shell (SSH) server, for secure access from remote machines
  This is the portable version of OpenSSH, a free implementation of the
  Secure Shell protocol as specified by the IETF secsh working group.

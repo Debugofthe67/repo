@@ -17,6 +17,11 @@ rm -f Packages Packages.gz Packages.bz2 Packages.xz Release Release.gpg
 echo "Scanning Debian packages..."
 dpkg-scanpackages -m ./debs /dev/null > Packages
 
+# ==============================================================================
+# LEGACY FIX: Prevent Cydia from hiding packages missing an internal "Name:" flag
+# ==============================================================================
+awk '/^Package:/ {pkg=$2} /^Description:/ && !name_found {print "Name: " pkg} {if($0 ~ /^Name:/) name_found=1; else if($0 == "") name_found=0; print}' Packages > Packages.tmp && mv Packages.tmp Packages
+
 # Count how many tweaks are currently in the folder
 TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 
@@ -36,6 +41,7 @@ bzip2 -c9 Packages > Packages.bz2
 xz -c9 Packages > Packages.xz
 
 # Generate a compliant master Release file using the smart REPO_NAME variable
+# FIXED: Standardized to native legacy architecture for iOS 5/6/7 compatibility
 echo "Generating Release file dynamically..."
 cat << EOF > Release
 Origin: $REPO_NAME
@@ -43,14 +49,19 @@ Label: $REPO_NAME
 Suite: stable
 Version: 1.0
 Codename: ios
-Architectures: iphoneos-arm iphoneos-arm64
+Architectures: iphoneos-arm
 Components: main
 Description: Automated repository for $REPO_NAME containing $TWEAK_COUNT active tweaks. Updated on $(date +%F).
 EOF
 
 # Calculate the sizes and checksums dynamically and append to Release
+# FIXED: Standardized case structure and forced exact spaces indentation for Cydia parser compliance
 for algo in MD5Sum SHA1 SHA256; do
-    echo "${algo}:" >> Release
+    if [ "$algo" = "SHA256" ]; then
+        echo "SHA256:" >> Release
+    else
+        echo "${algo}:" >> Release
+    fi
     for file in Packages Packages.gz Packages.bz2 Packages.xz; do
         if [ -f "$file" ]; then
             size=$(wc -c < "$file" | tr -d ' ')
@@ -64,7 +75,8 @@ for algo in MD5Sum SHA1 SHA256; do
             fi
             
             clean_hash=$(echo "$hash" | awk '{print $1}')
-            echo " $clean_hash $size $file" >> Release
+            # CRITICAL FIX: Added 2 explicit space markers before the hash string
+            echo "  $clean_hash $size $file" >> Release
         fi
     done
 done
@@ -164,4 +176,3 @@ git commit -m "Strip trailing line breaks from parsed file index structures"
 git push origin codespace-reimagined-garbanzo-97ggw7jv495xcx55x
 
 echo "Done! The hidden line characters have been entirely stripped out."
-
