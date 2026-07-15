@@ -8,16 +8,16 @@ Components: main
 Description: Automated repository for TP67 containing 24 active tweaks. Updated on 2026-07-15.
 MD5Sum:
   33f268196a4cf2927c63e228a2b71429 21070 Packages
-  a057f544efbb529a64cc8790e46c0f4a 5365 Packages.gz
+  37f083a0cb1f5d4a22d1f1e091662dae 5365 Packages.gz
   2f95fe39ca97139556c44f0825b8274a 5546 Packages.bz2
   2e038d74b0b19d8d745154d8deafc24d 4984 Packages.xz
 SHA1:
   f0f280bb338ad6f861fe992ab427a63f6da44556 21070 Packages
-  ced023c0da8187cf302298c0de8da0480e02529c 5365 Packages.gz
+  6d0d0dfa9adab05a832d2fe35de4dfdace5f1fb9 5365 Packages.gz
   36a8c5ae08ebb1e2c87474e1eadaff318f746d94 5546 Packages.bz2
   59cfe4ebf8f8d82695fcda4f13daa651363b5b99 4984 Packages.xz
 SHA256:
   a578e22752f8d1d28e8e3ec3a3f3c528804b1b575f0d9eb7b42c77016c0415aa 21070 Packages
-  c7db2de52d7f8e49edf13ba8fd077137f9f4dab999e8d499d2a0b8f81fde827c 5365 Packages.gz
+  c9381e463f7046f595660fe744996a299019beac205977c486db2c10879f08ee 5365 Packages.gz
   fe84e30e36d1e6acd13ec25db6fcd64a6476d4382e5c4f1927df2bb384160111 5546 Packages.bz2
   8228957d87558c6496e7efe93b876bb6a5e6ebdceef60b606498f9f75e49ae84 4984 Packages.xz

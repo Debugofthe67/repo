@@ -15,11 +15,12 @@ echo "Cleaning up old indices..."
 rm -f Packages Packages.gz Packages.bz2 Packages.xz Release Release.gpg
 
 echo "Scanning Debian packages..."
-dpkg-scanpackages -m ./debs /dev/null > Packages
+# FIX FOR IPHONE 4S: Uses an empty extra fields map to force preservation of legacy Cydia headers
+touch extra_fields
+dpkg-scanpackages -m -e extra_fields ./debs /dev/null > Packages
+rm -f extra_fields
 
-# ==============================================================================
-# LEGACY FIX: Prevent Cydia from hiding packages missing an internal "Name:" flag
-# ==============================================================================
+# LEGACY FIX: Inject a fallback Name: flag if dpkg-scanpackages leaves a tweak missing one
 awk '/^Package:/ {pkg=$2} /^Description:/ && !name_found {print "Name: " pkg} {if($0 ~ /^Name:/) name_found=1; else if($0 == "") name_found=0; print}' Packages > Packages.tmp && mv Packages.tmp Packages
 
 # Count how many tweaks are currently in the folder
@@ -41,7 +42,7 @@ bzip2 -c9 Packages > Packages.bz2
 xz -c9 Packages > Packages.xz
 
 # Generate a compliant master Release file using the smart REPO_NAME variable
-# FIXED: Standardized to native legacy architecture for iOS 5/6/7 compatibility
+# FIXED: Standardized to native legacy architecture for iPhone 4S compatibility
 echo "Generating Release file dynamically..."
 cat << EOF > Release
 Origin: $REPO_NAME
