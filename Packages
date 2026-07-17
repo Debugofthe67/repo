@@ -405,6 +405,20 @@ Author: Requis
 Depiction: http://cydia.skyglow.es/depictions/com.skyglow.weatherx/depictions/index.html
 Name: WeatherX
 
+Package: com.tp67.activ8lockdownd
+Version: 1.0
+Architecture: iphoneos-arm
+Maintainer: TP67
+Filename: ./debs/com.tp67.activ8lockdownd_1.0_iphoneos-arm.deb
+Size: 573694
+MD5sum: 5977ccc047a829387771b6686af47ee9
+SHA1: d6e4f83bde83a14badacf294c443be0554c06535
+SHA256: 229c719e55d7ea26d63fd7548b853244dcf9a601cb89d80fb6522a985e15ac62
+Section: System
+Description: If you just bypassed setup.app or deleted it, I recommend to install this.
+Author: TP67
+Name: activ8lockdownd
+
 Package: openssh
 Version: 8.4-2
 Architecture: iphoneos-arm
