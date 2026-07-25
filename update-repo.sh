@@ -20,19 +20,11 @@ dpkg-scanpackages -m ./debs /dev/null > Packages
 # Count how many tweaks are currently in the folder
 TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 
-# FIX: Check if we are running inside GitHub Codespaces
 # ==============================================================================
 # CUSTOM REPOSITORY METADATA CONFIGURATION (MANUAL HARDCODE)
 # ==============================================================================
 REPO_NAME="TP67"
 REPO_LABEL="TP67"
-
-# DYNAMIC DETECT: Safely parse the repository name from Git for HTML routing
-GIT_REPO_NAME=$(basename -s .git $(git config --get remote.origin.url) 2>/dev/null)
-if [ -z "$GIT_REPO_NAME" ]; then
-    # Fallback to your standard directory structure name if git fails
-    GIT_REPO_NAME="repo"
-fi
 
 # Create multiple compression formats
 echo "Compressing package indices..."
@@ -40,7 +32,7 @@ gzip -c9 Packages > Packages.gz
 bzip2 -c9 Packages > Packages.bz2
 xz -c9 Packages > Packages.xz
 
-# Generate a compliant master Release file using the smart REPO_NAME variable
+# Generate a compliant master Release file
 echo "Generating Release file dynamically..."
 cat << EOF > Release
 Origin: $REPO_NAME
@@ -79,85 +71,58 @@ sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.
 
 
 # ==============================================================================
-# FINAL DYNAMIC HTML INJECTION WITH TRIMMING STRIPPER (FIXES 404 TYPO)
+# ABSOLUTE REPOSITORY PATH HTML GENERATION (FIXES GITHUB PAGES 404)
 # ==============================================================================
-echo "Updating index.html with live tweak metadata (stripping hidden endings)..."
+echo "Updating index.html with absolute repository subfolder mapping..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
-# 2. Parse Packages file using an internal associative memory map via Awk
-HTML_LIST=$(awk -v repo="$GIT_REPO_NAME" '
-BEGIN {
-    RS = ""
-    FS = "\n"
-}
-{
-    id = ""
-    name = ""
-    desc = ""
-    ver = ""
-    filename = ""
-    
-    for (i = 1; i <= NF; i++) {
-        # FORCE CLEAN STRIPPING: Clear any and all hidden carriage returns, tabs, or trailing whitespace
-        gsub(/[\r\t]/, "", $i)
-        gsub(/[[:space:]]+$/, "", $i)
-        
-        if ($i ~ /^Package:/) { id = $i; sub(/^Package:[[:space:]]*/, "", id) }
-        if ($i ~ /^Name:/) { name = $i; sub(/^Name:[[:space:]]*/, "", name) }
-        if ($i ~ /^Description:/) { desc = $i; sub(/^Description:[[:space:]]*/, "", desc) }
-        if ($i ~ /^Version:/) { ver = $i; sub(/^Version:[[:space:]]*/, "", ver) }
-        if ($i ~ /^Filename:/) { filename = $i; sub(/^Filename:[[:space:]]*/, "", filename) }
-    }
-    
-    # Strip any whitespace around variables to guarantee clean output strings
-    gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
-    gsub(/^[[:space:]]+|[[:space:]]+$/, "", filename)
-    gsub(/^[[:space:]]+|[[:space:]]+$/, "", ver)
-    
-    if (id != "" && filename != "") {
-        if (name == "") name = id
-        if (desc == "") desc = "No description provided."
-        
-        # Track version hierarchy cleanly
-        if (!(id in saved_version) || ver > saved_version[id]) {
-            saved_version[id] = ver
-            saved_name[id] = name
-            saved_desc[id] = desc
-            saved_file[id] = filename
-        }
-    }
-}
-END {
-    for (id in saved_version) {
-        clean_url = saved_file[id]
-        
-        # Strip any leading dot or leading slash safely so we start clean
-        sub(/^\.\//, "", clean_url)
-        sub(/^\//, "", clean_url)
-        
-        # FIX: Generate a rigid GitHub Pages compatible domain absolute route
-        # This builds exactly: "/repo/debs/your-tweak.deb"
-        final_url = "/" repo "/" clean_url
-        
-        print "        <li class=\"ios-item\">"
-        print "            <a href=\"" final_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
-        print "                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
-        print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93;\">v" saved_version[id] "</span></div>"
-        print "                <div class=\"tweak-desc\">" saved_desc[id] "</div>"
-        print "            </a>"
-        print "        </li>"
-    }
-}' Packages)
+# 2. Rebuild the list array manually file-by-file from the physical disk structure
+HTML_LIST=""
 
-# 3. Inject the filtered clean HTML structures directly into index.html
+for deb_file in ./debs/*.deb; do
+    # Skip loop iteration if no .deb files exist safely
+    [ -e "$deb_file" ] || continue
+    
+    # Safely extract package configuration elements directly from the binary control fields
+    TWEAK_ID=$(dpkg-deb -f "$deb_file" Package 2>/dev/null | tr -d '\r' | xargs)
+    TWEAK_NAME=$(dpkg-deb -f "$deb_file" Name 2>/dev/null | tr -d '\r' | xargs)
+    TWEAK_VERSION=$(dpkg-deb -f "$deb_file" Version 2>/dev/null | tr -d '\r' | xargs)
+    TWEAK_DESC=$(dpkg-deb -f "$deb_file" Description 2>/dev/null | tr -d '\r' | xargs)
+    
+    # Fallbacks if properties are absent
+    if [ -z "$TWEAK_NAME" ]; then TWEAK_NAME="$TWEAK_ID"; fi
+    if [ -z "$TWEAK_DESC" ]; then TWEAK_DESC="No description provided."; fi
+    
+    # Extract only the file name
+    CLEAN_FILENAME=$(basename "$deb_file")
+    
+    # CRITICAL FIX: Force the path to include your repository name explicitly
+    FINAL_WEB_URL="/repo/debs/$CLEAN_FILENAME"
+    
+    # Append the item layout template snippet
+    HTML_ITEM=$(cat <<EOF
+        <li class="ios-item">
+            <a href="${FINAL_WEB_URL}" style="text-decoration:none; color:inherit; display:block;">
+                <span class="right-align"><span class="chevron"></span></span>
+                <div style="font-weight: bold; color: #000000;">${TWEAK_NAME} <span style="font-size:11px; color:#8e8e93;">v${TWEAK_VERSION}</span></div>
+                <div class="tweak-desc">${TWEAK_DESC}</div>
+            </a>
+        </li>
+EOF
+)
+    HTML_LIST="$HTML_LIST"$'\n'"$HTML_ITEM"
+done
+
+# 3. Inject the clean absolute HTML structures directly into index.html
 awk -v r="$HTML_LIST" '
   /<!-- TWEAKS_START -->/ { print; print r; next }
   1
 ' index.html > index.tmp && mv index.tmp index.html
 
 rm -f index.tmp index.html.bak
+
 
 # ==============================================================================
 # AUTOMATIC GIT CASE-SENSITIVITY RESET (PREVENTS FUTURE 404s)
@@ -179,7 +144,6 @@ CHANGED_FILES=$(git status --porcelain debs/ | awk '{print $2}' | xargs -I {} ba
 if [ -z "$CHANGED_FILES" ]; then
     COMMIT_MSG="Update Cydia repository structure and indices"
 else
-    # Format changes into a readable comma-separated list
     CLEAN_LIST=$(echo "$CHANGED_FILES" | paste -sd ", " -)
     COMMIT_MSG="Repo Update: Modified packages ($CLEAN_LIST)"
 fi
@@ -190,4 +154,4 @@ git add .
 git commit -m "$COMMIT_MSG"
 git push origin v2
 
-echo "Done! The hidden line characters have been entirely stripped out."
+echo "Done! The web routing path has been forced to include your repository subfolder."
