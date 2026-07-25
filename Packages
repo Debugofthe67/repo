@@ -419,6 +419,22 @@ Description: If you just bypassed setup.app or deleted it, I recommend to instal
 Author: TP67
 Name: activ8lockdownd
 
+Package: com.tp67.ichatappnative
+Version: 1.0.0-3+debug
+Architecture: iphoneos-arm
+Maintainer: TP67
+Installed-Size: 152
+Depends: mobilesubstrate
+Filename: ./debs/com.tp67.ichatappnative_1.0.0-3+debug_iphoneos-arm.deb
+Size: 37484
+MD5sum: 17d84b851de3fdfdccb4b10abfa45f35
+SHA1: fdb9400a6dee07b282f15ed24f97036533dba5f9
+SHA256: 9fe9b7b158c25af2bd589117dfb67fe6500c7711e52b43c18de9bfe119bd3e4e
+Section: Applications
+Description: Native AI Chat application for iOS 6.1.3
+Author: TP67
+Name: iChatApp Native
+
 Package: openssh
 Version: 8.4-2
 Architecture: iphoneos-arm

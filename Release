@@ -5,19 +5,19 @@ Version: 1.0
 Codename: ios
 Architectures: iphoneos-arm iphoneos-arm64
 Components: main
-Description: Automated repository for TP67 containing 25 active tweaks. Updated on 2026-07-17.
+Description: Automated repository for TP67 containing 26 active tweaks. Updated on 2026-07-25.
 MD5Sum:
- 1c1d6720c8ec9da38b4c4481843b3aee 20899 Packages
- b4b76e0a9fb2862b645ec629ed967f13 5502 Packages.gz
- 127d0a24c06fca3d5711c25af76738d0 5684 Packages.bz2
- 4597c6ec860b13cae7e1f5d79f71999c 5108 Packages.xz
+ 84f803045ac747f336b9ba8916809dc7 21401 Packages
+ 0ba1335e8bbd47a1055db91f22e90212 5678 Packages.gz
+ d351d98ded567b6f378179ca00a46320 5823 Packages.bz2
+ 7ba5ba7e68fcb8892f26df2e2eb2aaf6 5264 Packages.xz
 SHA1:
- 2540411bd87464da661402e958e0e17ae6cdc141 20899 Packages
- aeb9a7a2b21be6c1822486ba3de3a20ed4dcf583 5502 Packages.gz
- 8561b04be619fed6650b9f3592e5da03b8c635d8 5684 Packages.bz2
- bba749c1fbba0da9e32c48740c6cd1222122d02f 5108 Packages.xz
+ 94371690ca9ef79aef4d18691c822dca25bec1af 21401 Packages
+ b953cb4b69df70a00d41fa7879f8a4836d352a10 5678 Packages.gz
+ 7dc2fc8e4faaccbdfffef15a2577968b337498a3 5823 Packages.bz2
+ 795b217565417690ee54abd647a26770a27a75e6 5264 Packages.xz
 SHA256:
- d6323dedb77a16f738ae39628d5224a387de45bb80b96164800a662d489928d5 20899 Packages
- ccf488c06ec01cf8e87518113cd3c333f56a8e5eec33f8110b68cdb841e246e7 5502 Packages.gz
- 1361eee2c18f38dc14c256e8fd583af9e8a111f945ea957e0f6113013cc9d3f2 5684 Packages.bz2
- cc5cb133ff9104942a169c50e5fd6be05d9dde8dca5abca64db7e6ae18baef74 5108 Packages.xz
+ 3cbaced109b577d9144cd704f23eab1c4834fe06c908750e534b8cfce0664da1 21401 Packages
+ d4f583cffbe67900d47b84b8ed2bc8c0b373936aa62067b1435cba997d90c658 5678 Packages.gz
+ 5d8066717d46920ebde59ca41b72982a9e9ff42e86609bb6c759df9f4b42b5e1 5823 Packages.bz2
+ f02cb93126fb1a8384dee067fc1d3ceb89509c612609d632bfd9e0232f0c655e 5264 Packages.xz
