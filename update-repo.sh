@@ -27,8 +27,6 @@ TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 REPO_NAME="TP67"
 REPO_LABEL="TP67"
 
-
-
 # Create multiple compression formats
 echo "Compressing package indices..."
 gzip -c9 Packages > Packages.gz
@@ -127,7 +125,15 @@ BEGIN {
 END {
     for (id in saved_version) {
         clean_url = saved_file[id]
-        sub(/^\./, "", clean_url) # Strip prefix safely to align /debs/ link map
+        
+        # FIX: Ensure URL starts with "./" for correct relative GitHub Pages hosting
+        if (clean_url !~ /^\.\//) {
+            if (clean_url ~ /^\//) {
+                clean_url = "." clean_url
+            } else {
+                clean_url = "./" clean_url
+            }
+        }
         
         print "        <li class=\"ios-item\">"
         print "            <a href=\"" clean_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
@@ -156,11 +162,10 @@ mv debs debs_temp 2>/dev/null
 mv debs_temp debs 2>/dev/null
 git add debs/
 
-
 # Automatically sync files directly into GitHub tracking tree
 echo "Syncing changes to GitHub repository..."
 git add .
-git commit -m "Strip trailing line breaks from parsed file index structures"
+git commit -m "Fix 404 download paths by preserving relative dots"
 git push origin v2
 
 echo "Done! The hidden line characters have been entirely stripped out."
