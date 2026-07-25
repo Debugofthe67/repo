@@ -20,14 +20,8 @@ dpkg-scanpackages -m ./debs /dev/null > Packages
 # Count how many tweaks are currently in the folder
 TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 
-# FIX: Check if we are running inside GitHub Codespaces
-# ==============================================================================
-# CUSTOM REPOSITORY METADATA CONFIGURATION (MANUAL HARDCODE)
-# ==============================================================================
 REPO_NAME="TP67"
 REPO_LABEL="TP67"
-
-
 
 # Create multiple compression formats
 echo "Compressing package indices..."
@@ -35,7 +29,7 @@ gzip -c9 Packages > Packages.gz
 bzip2 -c9 Packages > Packages.bz2
 xz -c9 Packages > Packages.xz
 
-# Generate a compliant master Release file using the smart REPO_NAME variable
+# Generate a compliant master Release file
 echo "Generating Release file dynamically..."
 cat << EOF > Release
 Origin: $REPO_NAME
@@ -72,16 +66,15 @@ done
 # Force standard Unix LF line endings to avoid device parsing crashes
 sed -i.bak 's/\r$//' Release Packages 2>/dev/null && rm -f Release.bak Packages.bak
 
-
 # ==============================================================================
-# FINAL DYNAMIC HTML INJECTION WITH TRIMMING STRIPPER (FIXES 404 TYPO)
+# DYNAMIC HTML INJECTION (FIXED RELATIVE PATHS)
 # ==============================================================================
-echo "Updating index.html with live tweak metadata (stripping hidden endings)..."
+echo "Updating index.html with live tweak metadata..."
 
 # 1. Clear out any previous dynamically generated tweak lists from index.html
-sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
+sed -i.bak '//,//{//!d;}' index.html 2>/dev/null || sed -i '' '//,//{//!d;}' index.html
 
-# 2. Parse Packages file using an internal associative memory map via Awk
+# 2. Parse Packages file using AWK
 HTML_LIST=$(awk '
 BEGIN {
     RS = ""
@@ -95,7 +88,6 @@ BEGIN {
     filename = ""
     
     for (i = 1; i <= NF; i++) {
-        # FORCE CLEAN STRIPPING: Clear any and all hidden carriage returns, tabs, or trailing whitespace
         gsub(/[\r\t]/, "", $i)
         gsub(/[[:space:]]+$/, "", $i)
         
@@ -106,7 +98,6 @@ BEGIN {
         if ($i ~ /^Filename:/) { filename = $i; sub(/^Filename:[[:space:]]*/, "", filename) }
     }
     
-    # Strip any whitespace around variables to guarantee clean output strings
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", filename)
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", ver)
@@ -115,7 +106,6 @@ BEGIN {
         if (name == "") name = id
         if (desc == "") desc = "No description provided."
         
-        # Track version hierarchy cleanly
         if (!(id in saved_version) || ver > saved_version[id]) {
             saved_version[id] = ver
             saved_name[id] = name
@@ -127,7 +117,9 @@ BEGIN {
 END {
     for (id in saved_version) {
         clean_url = saved_file[id]
-        sub(/^\./, "", clean_url) # Strip prefix safely to align /debs/ link map
+        
+        # FIX: Strip "./" so it becomes a relative path "debs/filename.deb"
+        sub(/^\.\//, "", clean_url)
         
         print "        <li class=\"ios-item\">"
         print "            <a href=\"" clean_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
@@ -139,28 +131,28 @@ END {
     }
 }' Packages)
 
-# 3. Inject the filtered clean HTML structures directly into index.html
+# 3. Inject into index.html
 awk -v r="$HTML_LIST" '
-  /<!-- TWEAKS_START -->/ { print; print r; next }
+  // { print; print r; next }
   1
 ' index.html > index.tmp && mv index.tmp index.html
 
 rm -f index.tmp index.html.bak
 
-# ==============================================================================
-# AUTOMATIC GIT CASE-SENSITIVITY RESET (PREVENTS FUTURE 404s)
-# ==============================================================================
-echo "Resetting Git case tracking cache to prevent 404 errors..."
+# Force create .nojekyll so GitHub Pages doesn't block raw files
+touch .nojekyll
+
+# Reset Git case tracking cache
+echo "Resetting Git case tracking cache..."
 git rm -r --cached debs/ 2>/dev/null
 mv debs debs_temp 2>/dev/null
 mv debs_temp debs 2>/dev/null
 git add debs/
 
-
-# Automatically sync files directly into GitHub tracking tree
-echo "Syncing changes to GitHub repository..."
+# Sync changes directly into the current git branch
+echo "Syncing changes to GitHub..."
 git add .
-git commit -m "Strip trailing line breaks from parsed file index structures"
-git push origin codespace-reimagined-garbanzo-97ggw7jv495xcx55x
+git commit -m "Update repository index and fix relative links"
+git push origin HEAD
 
-echo "Done! The hidden line characters have been entirely stripped out."
+echo "Done! Repository indices updated and deployed."
