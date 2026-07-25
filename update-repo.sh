@@ -27,6 +27,13 @@ TWEAK_COUNT=$(find ./debs -name "*.deb" | wc -l | tr -d ' ')
 REPO_NAME="TP67"
 REPO_LABEL="TP67"
 
+# DYNAMIC DETECT: Safely parse the repository name from Git for HTML routing
+GIT_REPO_NAME=$(basename -s .git $(git config --get remote.origin.url) 2>/dev/null)
+if [ -z "$GIT_REPO_NAME" ]; then
+    # Fallback to your standard directory structure name if git fails
+    GIT_REPO_NAME="repo"
+fi
+
 # Create multiple compression formats
 echo "Compressing package indices..."
 gzip -c9 Packages > Packages.gz
@@ -80,7 +87,7 @@ echo "Updating index.html with live tweak metadata (stripping hidden endings)...
 sed -i.bak '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html 2>/dev/null || sed -i '' '/<!-- TWEAKS_START -->/,/<!-- TWEAKS_END -->/{//!d;}' index.html
 
 # 2. Parse Packages file using an internal associative memory map via Awk
-HTML_LIST=$(awk '
+HTML_LIST=$(awk -v repo="$GIT_REPO_NAME" '
 BEGIN {
     RS = ""
     FS = "\n"
@@ -126,17 +133,16 @@ END {
     for (id in saved_version) {
         clean_url = saved_file[id]
         
-        # FIX: Ensure URL starts with "./" for correct relative GitHub Pages hosting
-        if (clean_url !~ /^\.\//) {
-            if (clean_url ~ /^\//) {
-                clean_url = "." clean_url
-            } else {
-                clean_url = "./" clean_url
-            }
-        }
+        # Strip any leading dot or leading slash safely so we start clean
+        sub(/^\.\//, "", clean_url)
+        sub(/^\//, "", clean_url)
+        
+        # FIX: Generate a rigid GitHub Pages compatible domain absolute route
+        # This builds exactly: "/repo/debs/your-tweak.deb"
+        final_url = "/" repo "/" clean_url
         
         print "        <li class=\"ios-item\">"
-        print "            <a href=\"" clean_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
+        print "            <a href=\"" final_url "\" style=\"text-decoration:none; color:inherit; display:block;\">"
         print "                <span class=\"right-align\"><span class=\"chevron\"></span></span>"
         print "                <div style=\"font-weight: bold; color: #000000;\">" saved_name[id] " <span style=\"font-size:11px; color:#8e8e93;\">v" saved_version[id] "</span></div>"
         print "                <div class=\"tweak-desc\">" saved_desc[id] "</div>"
