@@ -161,6 +161,6 @@ git add debs/
 echo "Syncing changes to GitHub repository..."
 git add .
 git commit -m "Strip trailing line breaks from parsed file index structures"
-git push origin codespace-reimagined-garbanzo-97ggw7jv495xcx55x
+git push origin v2
 
 echo "Done! The hidden line characters have been entirely stripped out."
