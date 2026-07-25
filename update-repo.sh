@@ -162,10 +162,26 @@ mv debs debs_temp 2>/dev/null
 mv debs_temp debs 2>/dev/null
 git add debs/
 
+# ==============================================================================
+# DYNAMIC COMMIT MESSAGE GENERATION
+# ==============================================================================
+echo "Generating dynamic commit message..."
+
+# Check git status for changed filenames inside the debs folder
+CHANGED_FILES=$(git status --porcelain debs/ | awk '{print $2}' | xargs -I {} basename {})
+
+if [ -z "$CHANGED_FILES" ]; then
+    COMMIT_MSG="Update Cydia repository structure and indices"
+else
+    # Format changes into a readable comma-separated list
+    CLEAN_LIST=$(echo "$CHANGED_FILES" | paste -sd ", " -)
+    COMMIT_MSG="Repo Update: Modified packages ($CLEAN_LIST)"
+fi
+
 # Automatically sync files directly into GitHub tracking tree
 echo "Syncing changes to GitHub repository..."
 git add .
-git commit -m "Fix 404 download paths by preserving relative dots"
+git commit -m "$COMMIT_MSG"
 git push origin v2
 
 echo "Done! The hidden line characters have been entirely stripped out."
